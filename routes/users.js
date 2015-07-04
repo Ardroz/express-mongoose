@@ -26,7 +26,63 @@ router.get('/:username', function (req, res) {
         if (err) {
           return console.error(err);
         }
-        res.send(user);
+        if (user) {
+          res.send(user);
+        }
+        var userMessage = req.params.username + 'does not exists.';
+          res.send({
+            'status': '404 not found',
+            'message': userMessage}
+          );
+      }
+    );
+});
+
+router.patch('/:username', function (req, res) {
+  User
+    .update(
+      { username: req.params.username },
+      { mail: req.body.mail },
+      function (err, result) {
+        if (err) {
+          return console.error(err);
+        }
+        console.log(result);
+        if (result.n !== 0){
+          res.send(result);
+        } else {
+          var userMessage = req.params.username + 'does not exist';
+          res.send({
+            'status': '404 not found',
+            'message': userMessage
+          });
+        }
+        
+      }
+    );
+});
+
+
+
+router.delete('/:username', function (req, res) {
+  User
+    .remove(
+      { username: req.params.username },
+      function (err, user) {
+        if (err) {
+          return console.error(err);
+        }
+        if (user.result.n === 0) {
+          res.send({
+            success: true,
+            message: 'No user found'
+          });
+        } else {
+          res.send({
+            success: true,
+            message: 'Users deleted: ' + user.result.n
+          });
+        }
       }
     );
 });
