@@ -28,12 +28,13 @@ router.get('/:username', function (req, res) {
         }
         if (user) {
           res.send(user);
-        }
-        var userMessage = req.params.username + 'does not exists.';
+        } else {
+          var userMessage = req.params.username + 'does not exists.';
           res.send({
             'status': '404 not found',
-            'message': userMessage}
-          );
+            'message': userMessage
+          });
+        }
       }
     );
 });
@@ -57,7 +58,7 @@ router.patch('/:username', function (req, res) {
             'message': userMessage
           });
         }
-        
+
       }
     );
 });
